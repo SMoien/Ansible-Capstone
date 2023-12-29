@@ -1,0 +1,33 @@
+- name: Install Packages for wordpress
+  ansible.builtin.apt:
+    name: 
+      - apache2
+      - php
+      - php-pear
+      - php-cgi
+      - php-common
+      - php-curl
+      - php-mbstring
+      - php-gd
+      - php-mysqlnd
+      - php-bcmath
+      - php-json
+      - php-xml
+      - php-intl
+      - php-zip
+      - php-imap
+      - php-imagick
+    update_cache: yes
+- name: Enable service httpd and ensure it is not masked
+  ansible.builtin.systemd:
+    name: apache2
+    enabled: true
+    masked: no
+    state: started
+- name: Change file ownership, group and permissions
+  ansible.builtin.file:
+    path: /var/www/html
+    owner: codio
+    group: www-data
+    mode: '0664'
+    recurse: true
